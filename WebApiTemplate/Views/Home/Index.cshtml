@@ -1,0 +1,49 @@
+﻿<div class="jumbotron">
+    <h1>Test Page</h1>
+    <p class="lead">Testing authentication and getting fake data. You should see something...</p>
+</div>
+<div class="row" ng-app="testApp">
+    <div class="col-md-12" ng-controller="testController as vm">
+        <pre>{{ vm.data | json }}</pre>
+    </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
+<script type="text/javascript">
+    (function () {
+        'use strict';
+
+        angular
+            .module('testApp', [])
+            .controller('testController', testController);
+
+        testController.$inject = ['$http'];
+        function testController($http) {
+            var vm = this;
+            vm.data = { status: 'loading...' };
+
+            var data = 'grant_type=password&username=TestUser1&password=password';
+            $http.post('/token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, ignoreAuthModule: true }).then(function (response) {
+                var token = response.data.access_token;
+
+                var headers = {
+                    Authorization: 'Bearer ' + response.data.access_token,
+                    Accept: 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json; charset=utf-8'
+                };
+
+                $http.get('/api/Test/GetTestData', { cache: false, authorize: true, headers: headers }).then(function successCallback(response) {
+                    vm.data = response;
+                }).catch(function (e) {
+                    vm.data.status = 'Request Fale!';
+                });
+
+                
+            }).catch(function (e) {
+                vm.data.status = 'Auth Fale!';
+            });
+
+            
+           
+        }
+    })();
+</script>
