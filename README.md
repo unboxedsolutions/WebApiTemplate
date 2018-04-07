@@ -12,3 +12,6 @@ From an empty Web application, you'll need to add the following NuGet packages:
 <li>Microsoft.AspNet.WebApi.Owin</li>
 <li>Microsoft.Owin.Host.SystemWeb</li>
 <ul>
+
+## Added ExampleNodeEndpoint
+The ExampleNodeEndpoint folder contains an ExpressJS app that uses passport to validate the JWT token created by the Web API which is demonstrated by the AngularJS client application calling to it as well as the Web API.
