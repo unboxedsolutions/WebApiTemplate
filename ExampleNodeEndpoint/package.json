@@ -1,0 +1,30 @@
+{
+  "name": "example-node-endpoint",
+  "version": "1.0.0",
+  "description": "Skeleton WebAPI project with token authentication, log4net, and Castle Windsor IoC, and <b>no</b> Entity Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unboxedsolutions/WebApiTemplate.git"
+  },
+  "author": "Sean Chase",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unboxedsolutions/WebApiTemplate/issues"
+  },
+  "homepage": "https://github.com/unboxedsolutions/WebApiTemplate#readme",
+  "dependencies": {
+    "bcrypt": "^2.0.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
+    "passport-oauth2-jwt-bearer": "^0.2.0"
+  }
+}
