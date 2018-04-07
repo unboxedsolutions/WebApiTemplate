@@ -1,8 +1,10 @@
-﻿using Microsoft.Owin.Security.DataHandler.Encoder;
+﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
@@ -15,8 +17,16 @@ namespace WebApiTemplate.Infrastructure {
             var audience = WebConfigurationManager.AppSettings["jwt:ClientID"] ?? "all";
             var key = Encoding.ASCII.GetBytes(WebConfigurationManager.AppSettings["jwt:ClientSecret"]);
 
-            AllowedAudiences = new[] { audience };
-            IssuerSecurityTokenProviders = new[] { new SymmetricKeyIssuerSecurityTokenProvider(issuer, key) };
+            AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active;
+            TokenValidationParameters = new TokenValidationParameters {
+                ValidAudience = audience,
+                ValidIssuer = issuer,
+                IssuerSigningKeyResolver =
+                    (string token, SecurityToken securityToken, string kid, TokenValidationParameters validationParameters)
+                        => new List<SecurityKey> {
+                            new SymmetricSecurityKey(key)
+                        }
+            };
         }
     }
 }

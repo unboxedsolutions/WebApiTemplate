@@ -1,11 +1,13 @@
-﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.OAuth;
-using System;
-using System.IdentityModel.Tokens;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Web.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OAuth;
 
-namespace WebApiTemplate.Infrastructure {
+namespace WebApiTemplate.Infrastructure
+{
     public class WebApiTemplateJwtFormat : ISecureDataFormat<AuthenticationTicket> {
         private readonly OAuthAuthorizationServerOptions _options;
 
@@ -31,9 +33,10 @@ namespace WebApiTemplate.Infrastructure {
             var key = Encoding.ASCII.GetBytes(WebConfigurationManager.AppSettings["jwt:ClientSecret"]);
             var now = DateTime.UtcNow;
             var expires = now.AddMinutes(_options.AccessTokenExpireTimeSpan.TotalMinutes);
-            var signingCredentials = new SigningCredentials(new InMemorySymmetricSecurityKey(key), SignatureAlgorithm, DigestAlgorithm);
+            
+            var securityKey = new SymmetricSecurityKey(key);
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var token = new JwtSecurityToken(issuer, audience, data.Identity.Claims, now, expires, signingCredentials);
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
