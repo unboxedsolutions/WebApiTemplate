@@ -1,11 +1,12 @@
-﻿using Microsoft.Owin;
+﻿using Owin;
+using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
-using Owin;
 using WebApiTemplate.Infrastructure;
 
 [assembly: OwinStartup(typeof(WebApiTemplate.Startup))]
 
-namespace WebApiTemplate {
+namespace WebApiTemplate
+{
     public class Startup {
         public void Configuration(IAppBuilder app) {
             ConfigureAuth(app);
